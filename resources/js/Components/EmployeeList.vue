@@ -1,16 +1,19 @@
 <script>
 import LayoutComponent from "./Layout/Layout.vue";
-import MainContentTitleComponent from "./Layout/ContentTitle.vue";
+import ContentTitle from "./Layout/ContentTitle.vue";
 
 export default {
-    name: "EmployeeListComponent",
-    components: {MainContentTitleComponent},
+    name: "EmployeeList",
     layout: LayoutComponent,
+    components: {
+        ContentTitle
+    },
 }
 </script>
 
 <template>
-    <MainContentTitleComponent title="Employee List"></MainContentTitleComponent>
+    <ContentTitle title="Employee List"></ContentTitle>
+
     <div>Employee List</div>
 </template>
 
