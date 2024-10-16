@@ -12,7 +12,10 @@ Route::group(['middleware' => 'guest'], function () {
 
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::get('/employees/list', [EmployeeController::class, 'index'])->name('employees.index');
+    Route::get('/employees/get', [EmployeeController::class, 'getEmployees'])->name('employees.get');
+
     Route::get('/positions/list', [PositionController::class, 'index'])->name('positions.index');
+    Route::get('/positions/get', [PositionController::class, 'getPositions'])->name('positions.get');
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });

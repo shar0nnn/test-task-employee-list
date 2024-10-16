@@ -1,8 +1,9 @@
 <script>
 export default {
-    name: "TitleComponent",
+    name: "ContentTitle",
     props: {
-        title: String
+        title: String,
+        actionTitle: String,
     }
 }
 </script>
@@ -16,10 +17,11 @@ export default {
                     <h1 class="m-0">{{ title }}</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Dashboard v1</li>
-                    </ol>
+                    <div class="breadcrumb float-sm-right">
+                        <div class="breadcrumb-item">
+                            <button type="button" href="#" class="btn btn-block btn-primary">{{ actionTitle }}</button>
+                        </div>
+                    </div>
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->

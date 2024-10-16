@@ -5,7 +5,9 @@ import Header from "./Header.vue";
 
 export default {
     name: "Layout",
-    components: {Sidebar, Header, Footer}
+    components: {
+        Sidebar, Header, Footer
+    }
 }
 </script>
 
@@ -18,6 +20,7 @@ export default {
 
         <!-- Main Sidebar Container -->
         <Sidebar></Sidebar>
+        <!-- /.main-sidebar-container -->
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -30,8 +33,10 @@ export default {
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
-        <Footer></Footer>
 
+        <!-- Footer -->
+        <Footer></Footer>
+        <!-- /.footer -->
     </div>
 </template>
 

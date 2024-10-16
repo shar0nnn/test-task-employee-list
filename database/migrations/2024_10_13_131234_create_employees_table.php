@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->decimal('salary')->default(0);
             $table->string('photo')->nullable();
+            $table->unsignedSmallInteger('rank');
 
             $table->unsignedBigInteger('admin_created_id')->nullable();
             $table->foreign('admin_created_id')->references('id')->on('users')->onDelete('set null');
