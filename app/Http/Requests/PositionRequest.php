@@ -22,7 +22,15 @@ class PositionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'position' => ['required', 'string', 'max:256'],
+            'positionName' => ['required', 'string', 'max:256'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'positionName.required' => 'Необхідно вказати назву посади',
+            'positionName.max' => 'Максимальний розмір - 256 символів',
         ];
     }
 }

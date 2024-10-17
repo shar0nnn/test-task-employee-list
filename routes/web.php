@@ -11,11 +11,21 @@ Route::group(['middleware' => 'guest'], function () {
 });
 
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
-    Route::get('/employees/list', [EmployeeController::class, 'index'])->name('employees.index');
-    Route::get('/employees/get', [EmployeeController::class, 'getEmployees'])->name('employees.get');
 
-    Route::get('/positions/list', [PositionController::class, 'index'])->name('positions.index');
-    Route::get('/positions/get', [PositionController::class, 'getPositions'])->name('positions.get');
+    Route::prefix('/employees')->controller(EmployeeController::class)->group(function () {
+        Route::get('/list', 'index')->name('employees.index');
+        Route::get('/get', 'getEmployees')->name('employees.get');
+    });
+
+    Route::prefix('/positions')->controller(PositionController::class)->group(function () {
+        Route::get('/list', 'index')->name('positions.index');
+        Route::get('/get', 'getPositions')->name('positions.get');
+        Route::get('/create', 'showCreatePositionComponent')->name('positions.create.show');
+        Route::post('/create', 'createPosition')->name('positions.create ');
+        Route::get('/edit/{position}', 'showEditPositionComponent')->name('positions.edit.show');
+        Route::patch('/edit/{position}', 'editPosition')->name('positions.edit');
+        Route::delete('/delete/{position}', 'deletePosition')->name('positions.delete');
+    });
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });

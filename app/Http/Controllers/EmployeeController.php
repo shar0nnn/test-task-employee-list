@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Inertia\Response;
@@ -13,18 +12,20 @@ class EmployeeController extends Controller
 {
     public function index(): Response|ResponseFactory
     {
-        return inertia('EmployeeList');
+        return inertia('Employee/EmployeeList');
     }
 
     public function getEmployees(Request $request)
     {
         if ($request->ajax()) {
-            $paginator = Employee::with('position')->paginate();
-            $resource = EmployeeResource::collection($paginator);
+            $queryBuilder = Employee::with('position');
 
-            return DataTables::of($resource)
+            return DataTables::of($queryBuilder)
                 ->addColumn('position', function (Employee $employee) {
                     return $employee->position->name;
+                })->orderColumn('position', function ($query, $order) {
+                    $query->join('positions', 'employees.position_id', '=', 'positions.id')
+                        ->orderBy('positions.name', $order);
                 })->make();
         }
     }

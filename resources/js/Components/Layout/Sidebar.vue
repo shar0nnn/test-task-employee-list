@@ -13,7 +13,7 @@ export default {
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <Link :href="route('employees.index')" class="brand-link">
-            <span class="brand-text">Test Task</span>
+            <span class="brand-text">Тестове завдання</span>
         </Link>
 
         <!-- Sidebar -->

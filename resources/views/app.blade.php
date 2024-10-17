@@ -23,6 +23,12 @@
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
 {{--<!-- AdminLTE App -->--}}
-{{--<script src="../../public/dist/js/adminlte.js"></script>--}}
+{{--<script src="{{asset("dist/js/adminlte.js")}}"></script>--}}
+
+<!-- jQuery -->
+<script src="{{asset('assets/jquery/jquery.js')}}"></script>
+
+<!-- Bootstrap 4 -->
+<script src="{{asset('assets/bootstrap/js/bootstrap.bundle.js')}}"></script>
 </body>
 </html>

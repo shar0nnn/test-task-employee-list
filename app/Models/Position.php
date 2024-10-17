@@ -12,4 +12,9 @@ class Position extends Model
     protected $fillable = [
         'name', 'admin_created_id', 'admin_updated_id'
     ];
+
+    protected $casts = [
+        'created_at' => 'date:d.m.Y',
+        'updated_at' => 'date:d.m.Y',
+    ];
 }

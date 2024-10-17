@@ -1,6 +1,6 @@
 <script>
-import LayoutComponent from "./Layout/Layout.vue";
-import ContentTitle from "./Layout/ContentTitle.vue";
+import Layout from "../Layout/Layout.vue";
+import ContentTitle from "../Layout/ContentTitle.vue";
 import {Link} from "@inertiajs/vue3";
 import DataTable from 'datatables.net-vue3'
 import DataTableCore from 'datatables.net-dt'
@@ -9,7 +9,7 @@ DataTable.use(DataTableCore)
 
 export default {
     name: "EmployeeList",
-    layout: LayoutComponent,
+    layout: Layout,
     components: {
         DataTable, ContentTitle, Link,
     },
@@ -57,7 +57,7 @@ export default {
 </script>
 
 <template>
-    <ContentTitle title="Працівники" action-title="Додати працівника"></ContentTitle>
+    <ContentTitle title="Працівники"></ContentTitle>
 
     <section class="content">
         <div class="container-fluid">
