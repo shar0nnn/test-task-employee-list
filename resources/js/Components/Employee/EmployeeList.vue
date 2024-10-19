@@ -14,45 +14,25 @@ export default {
         DataTable, ContentTitle, Link,
     },
     props: {
-    //     resource: Array,
+        errors: Object,
     },
 
     data() {
         return {
             columns: [
-                {data: 'photo', title: 'Фото'},
+                {data: 'photo', orderable: false, title: 'Фото'},
                 {data: 'full_name', title: 'Ім\'я'},
                 {data: 'position', title: 'Посада'},
-                {data: 'hired_at', title: 'Дата початку роботи'},
+                {data: 'hired_at', title: 'Дата працевлаштування'},
                 {data: 'phone', title: 'Телефон'},
                 {data: 'email', title: 'Email'},
                 {data: 'salary', title: 'Зарплата'},
-                {render: (data, type, row) => {
-                    return `<a href="#" class="mr-3"><ion-icon name="create-outline"></ion-icon></a>
-<a href="#"><ion-icon name="trash-outline"></ion-icon></a>`
-                    }, title: 'Дії'}
+                {data: null, render: '#actions', orderable: false, title: 'Дії'}
             ],
-
-            employees: null,
         }
     },
 
-    mounted() {
-        // this.getEmployees()
-    },
-
-    methods: {
-        getEmployees() {
-            axios.get('/employees/get')
-                .then(result => {
-                    console.log(result);
-                    this.employees = result.data.data
-                    setTimeout(() => {
-                        new DataTable('#employees-table')
-                    }, 10)
-                })
-        }
-    },
+    methods: {},
 }
 </script>
 
@@ -66,45 +46,30 @@ export default {
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Список працівників</h3>
+
+                            <div class="float-right">
+                                <Link href="/employees/create" class="btn btn-outline-primary">
+                                    Додати працівника
+                                </Link>
+                            </div>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="employees-table" class="table p-6 table-bordered table-striped">
+                            <table class="table p-6 table-bordered table-striped">
                                 <DataTable ajax="/employees/get" :columns="columns"
                                            :options="{select:true, serverSide:true}">
-                                </DataTable>
-                                <!--                                <thead>-->
-                                <!--                                <tr>-->
-                                <!--                                    <th>Фото</th>-->
-                                <!--                                    <th>Ім'я</th>-->
-                                <!--                                    <th>Посада</th>-->
-                                <!--                                    <th>Дата початку роботи</th>-->
-                                <!--                                    <th>Телефон</th>-->
-                                <!--                                    <th>Email</th>-->
-                                <!--                                    <th>Зарплата</th>-->
-                                <!--                                    <th>Дії</th>-->
-                                <!--                                </tr>-->
-                                <!--                                </thead>-->
+                                    <template #actions="props">
+                                        <Link class="mr-3 btn btn-default"
+                                              :href="`/positions/edit/${props.rowData.id}`">
+                                            <ion-icon name="create-outline"></ion-icon>
+                                        </Link>
 
-                                <!--                                <tbody>-->
-                                <!--                                <tr v-for="employee in employees">-->
-                                <!--                                    <td>{{ employee.photo }}</td>-->
-                                <!--                                    <td>{{ employee.full_name }}</td>-->
-                                <!--                                    <td>{{ employee.position }}</td>-->
-                                <!--                                    <td>{{ employee.hired_at }}</td>-->
-                                <!--                                    <td>{{ employee.phone }}</td>-->
-                                <!--                                    <td>{{ employee.email }}</td>-->
-                                <!--                                    <td>{{ employee.salary }}</td>-->
-                                <!--                                    <td>-->
-                                <!--                                        <Link href="#" class="mr-3">-->
-                                <!--                                            <ion-icon name="create-outline"></ion-icon>-->
-                                <!--                                        </Link>-->
-                                <!--                                        <Link href="#">-->
-                                <!--                                            <ion-icon name="trash-outline"></ion-icon>-->
-                                <!--                                        </Link>-->
-                                <!--                                    </td>-->
-                                <!--                                </tr>-->
-                                <!--                                </tbody>-->
+                                        <button class="btn btn-default"
+                                                @click="showDeletePositionModal(props.rowData)">
+                                            <ion-icon name="trash-outline"></ion-icon>
+                                        </button>
+                                    </template>
+                                </DataTable>
                             </table>
                         </div>
                         <!-- /.card-body -->

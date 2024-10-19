@@ -85,14 +85,14 @@ export default {
                             <h3 class="card-title">Список посад</h3>
 
                             <div class="float-right">
-                                <Link as="button" href="/positions/create" class="btn btn-block btn-primary">
+                                <Link href="/positions/create" class="btn btn-outline-primary">
                                     Додати посаду
                                 </Link>
                             </div>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="example1" class="table p-6 table-bordered table-striped">
+                            <table class="table p-6 table-bordered table-striped">
                                 <DataTable ajax="/positions/get" :columns="columns"
                                            :options="{select:true, serverSide:true}">
                                     <template #actions="props">

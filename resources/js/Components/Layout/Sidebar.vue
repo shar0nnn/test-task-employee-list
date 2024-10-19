@@ -27,7 +27,7 @@ export default {
                         <Link :href="route('employees.index')" class="nav-link"
                               :class="{'active': $page.url === '/employees/list'}">
                             <p>
-                                Співробітники
+                                Працівники
                             </p>
                         </Link>
                     </li>

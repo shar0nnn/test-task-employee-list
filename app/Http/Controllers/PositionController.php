@@ -21,9 +21,7 @@ class PositionController extends Controller
     public function getPositions(Request $request)
     {
         if ($request->ajax()) {
-            $queryBuilder = Position::query();
-
-            return DataTables::of($queryBuilder)->only(['id', 'name', 'updated_at'])->toJson();
+            return DataTables::of(Position::query())->only(['id', 'name', 'updated_at'])->make();
         }
     }
 
