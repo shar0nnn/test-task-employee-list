@@ -10,8 +10,8 @@
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{asset('assets/fontawesome-free/css/all.css')}}">
-    <!-- daterange picker -->
-    <link rel="stylesheet" href="{{asset('assets/daterangepicker/daterangepicker.css')}}">
+    <!-- Jquery-ui -->
+{{--    <link rel="stylesheet" href="{{asset('assets/jquery-ui/jquery-ui.css')}}">--}}
     <!-- Theme style -->
     <link rel="stylesheet" href="{{asset("dist/css/adminlte.css")}}">
 
@@ -26,12 +26,11 @@
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 <!-- jQuery -->
 <script src="{{asset('assets/jquery/jquery.js')}}"></script>
+{{--<script src="{{asset('assets/jquery-ui/jquery-ui.js')}}"></script>--}}
 <!-- Bootstrap 4 -->
 <script src="{{asset('assets/bootstrap/js/bootstrap.bundle.js')}}"></script>
 <!-- bs-custom-file-input -->
 <script src="{{asset('assets/bs-custom-file-input/bs-custom-file-input.js')}}"></script>
-<!-- date-range-picker -->
-<script src="{{asset('assets/daterangepicker/daterangepicker.js')}}"></script>
 {{--<!-- AdminLTE App -->--}}
 <script src="{{asset("dist/js/adminlte.js")}}"></script>
 </body>

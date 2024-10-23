@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PositionRequest;
 use App\Models\Position;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,6 +19,9 @@ class PositionController extends Controller
         return inertia('Position/PositionList');
     }
 
+    /**
+     * @throws Exception
+     */
     public function getPositions(Request $request)
     {
         if ($request->ajax()) {
@@ -32,10 +36,10 @@ class PositionController extends Controller
 
     public function createPosition(PositionRequest $request): RedirectResponse
     {
-        $credentials = $request->validated();
+        $data = $request->validated();
 
         Position::query()->create([
-            'name' => $credentials['positionName'],
+            'name' => $data['positionName'],
             'admin_created_id' => auth()->id(),
         ]);
 
@@ -49,10 +53,10 @@ class PositionController extends Controller
 
     public function editPosition(PositionRequest $request, Position $position): RedirectResponse
     {
-        $credentials = $request->validated();
+        $data = $request->validated();
 
         $position->update([
-            'name' => $credentials['positionName'],
+            'name' => $data['positionName'],
             'admin_updated_id' => auth()->id(),
         ]);
 

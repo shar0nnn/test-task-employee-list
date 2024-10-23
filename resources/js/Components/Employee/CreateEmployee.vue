@@ -1,17 +1,15 @@
 <script>
-import Layout from "../Layout/Layout.vue";
-import ContentTitle from "../Layout/ContentTitle.vue";
-import {Link, useForm} from "@inertiajs/vue3";
-import Inputmask from 'inputmask';
+import Layout from "../Layout/Layout.vue"
+import ContentTitle from "../Layout/ContentTitle.vue"
+import {Link, useForm} from "@inertiajs/vue3"
+import Inputmask from 'inputmask'
+import Datepicker from 'vue3-datepicker'
 
-// $('#reservationdate').datetimepicker({
-//     format: 'L'
-// })
 export default {
     name: "CreateEmployee",
     layout: Layout,
     components: {
-        ContentTitle, Link,
+        ContentTitle, Link, Datepicker,
     },
     props: {
         positions: Array,
@@ -21,7 +19,7 @@ export default {
         return {
             data: useForm({
                 photo: null,
-                full_name: null,
+                fullName: null,
                 phone: null,
                 email: null,
                 position: null,
@@ -30,7 +28,7 @@ export default {
                     name: "",
                     id: null,
                 },
-                // hiredAt: null,
+                hiredAt: null,
             }),
 
             filteredManagers: [],
@@ -39,9 +37,7 @@ export default {
     },
 
     mounted() {
-        const input = this.$refs.phoneInput
-        Inputmask("+380 (99) 999-99-99").mask(input)
-
+        Inputmask("+380 (99) 999-99-99").mask(this.$refs.phoneInput)
     },
 
     methods: {
@@ -91,19 +87,19 @@ export default {
                             <input type="file" class="custom-file-input"
                                    :class="{'is-invalid': data.errors.photo}" @change="handleFileInput">
                             <label class="custom-file-label">Виберіть фото</label>
-                            <div v-if="data.errors.photo" class="invalid-feedback">
-                                {{ data.errors.photo }}
-                            </div>
                         </div>
+                    </div>
+                    <div v-if="data.errors.photo" class="invalid-feedback">
+                        {{ data.errors.photo }}
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>Ім'я</label>
-                    <input v-model="data.name" :class="{'is-invalid': data.errors.name}"
+                    <input v-model="data.fullName" :class="{'is-invalid': data.errors.fullName}"
                            class="form-control" placeholder="Введіть ім'я" type="text">
-                    <div v-if="data.errors.name" class="invalid-feedback">
-                        {{ data.errors.name }}
+                    <div v-if="data.errors.fullName" class="invalid-feedback">
+                        {{ data.errors.fullName }}
                     </div>
                 </div>
 
@@ -151,10 +147,10 @@ export default {
                 <div class="form-group">
                     <label>Керівник</label>
                     <input v-model="data.manager.name" @input="filterManagers"
-                           :class="{'is-invalid': data.errors.manager}" type="text"
+                           :class="{'is-invalid': data.errors['manager.name']}" type="text"
                            class="form-control" placeholder="Введіть ім'я керівника">
-                    <div v-if="data.errors.manager" class="invalid-feedback">
-                        {{ data.errors.manager }}
+                    <div v-if="data.errors['manager.name']" class="invalid-feedback">
+                        {{ data.errors['manager.name'] }}
                     </div>
 
                     <ul v-if="filteredManagers.length" class="list-group mt-1">
@@ -166,24 +162,19 @@ export default {
                     </ul>
                 </div>
 
-<!--                <div class="form-group">-->
-<!--                    <label>Date:</label>-->
-<!--                    <div class="input-group date" id="reservationdate" data-target-input="nearest">-->
-<!--                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>-->
-<!--                        <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">-->
-<!--                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                <div class="form-group">-->
-<!--                    <label>Дата працевлаштування</label>-->
-<!--                    <input v-model="data.positionName" :class="{'is-invalid': data.errors.positionName}"-->
-<!--                           class="form-control" placeholder="Виберіть дату працевлаштування" type="text">-->
-<!--                    <div v-if="data.errors.positionName" class="invalid-feedback">-->
-<!--                        {{ data.errors.positionName }}-->
-<!--                    </div>-->
-<!--                </div>-->
+                <div class="form-group">
+                    <label>Дата працевлаштування</label>
+                    <div class="input-group date">
+                        <datepicker class="form-control" :class="{'is-invalid': data.errors.hiredAt}"
+                                    placeholder="Виберіть дату працевлаштування" v-model="data.hiredAt"/>
+                        <div class="input-group-append">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                    <div v-if="data.errors.hiredAt" class="invalid-feedback">
+                        {{ data.errors.hiredAt }}
+                    </div>
+                </div>
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
@@ -195,5 +186,7 @@ export default {
 </template>
 
 <style scoped>
-
+.invalid-feedback {
+    display: block;
+}
 </style>

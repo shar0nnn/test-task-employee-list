@@ -20,14 +20,14 @@ export default {
     data() {
         return {
             columns: [
-                {data: 'photo', orderable: false, title: 'Фото'},
+                {data: null, render: '#photo', orderable: false, title: 'Фото'},
                 {data: 'full_name', title: 'Ім\'я'},
                 {data: 'position', title: 'Посада'},
                 {data: 'hired_at', title: 'Дата працевлаштування'},
                 {data: 'phone', title: 'Телефон'},
                 {data: 'email', title: 'Email'},
                 {data: 'salary', title: 'Зарплата'},
-                {data: null, render: '#actions', orderable: false, title: 'Дії'}
+                {data: null, render: '#actions', orderable: false, title: 'Дії', width: '8%'}
             ],
         }
     },
@@ -58,6 +58,11 @@ export default {
                             <table class="table p-6 table-bordered table-striped">
                                 <DataTable ajax="/employees/get" :columns="columns"
                                            :options="{select:true, serverSide:true}">
+                                    <template #photo="props">
+                                        <img v-if="props.rowData.photo" class="direct-chat-img"
+                                             :src="'/storage/' + props.rowData.photo">
+                                    </template>
+
                                     <template #actions="props">
                                         <Link class="mr-3 btn btn-default"
                                               :href="`/positions/edit/${props.rowData.id}`">
