@@ -29,7 +29,7 @@ export default {
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form @submit.prevent="data.post('/positions/create')">
+        <form @submit.prevent="data.post('/positions/store')">
             <div class="card-body">
                 <div class="form-group">
                     <label for="position">Назва</label>
@@ -43,7 +43,7 @@ export default {
             <!-- /.card-body -->
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary mr-5">Додати</button>
-                <Link href="/positions/list" class="btn btn-secondary">Назад</Link>
+                <Link href="/positions" class="btn btn-secondary">Назад</Link>
             </div>
         </form>
     </div>

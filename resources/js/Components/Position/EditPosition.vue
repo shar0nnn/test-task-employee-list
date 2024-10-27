@@ -33,7 +33,7 @@ export default {
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form @submit.prevent="data.patch(`/positions/edit/${data.positionId}`)">
+        <form @submit.prevent="data.patch(`/positions/${data.positionId}`)">
             <div class="card-body">
                 <div class="form-group">
                     <label for="position">Назва</label>
@@ -42,28 +42,28 @@ export default {
                     <div v-if="data.errors.positionName" class="invalid-feedback">
                         {{ data.errors.positionName }}
                     </div>
+                </div>
 
-                    <div class="d-flex justify-content-between mt-3">
+                <div class="d-flex justify-content-between mt-3">
+                    <div>
                         <div>
-                            <div>
-                                <span class="text-bold">Created at: </span>
-                                {{ this.position.created_at }}
-                            </div>
-                            <div>
-                                <span class="mt-3 text-bold">Updated at: </span>
-                                {{ this.position.updated_at }}
-                            </div>
+                            <span class="text-bold">Created at: </span>
+                            {{ this.position.created_at }}
                         </div>
-
                         <div>
-                            <div>
-                                <span class="text-bold">Admin created ID: </span>
-                                {{ this.position.admin_created_id }}
-                            </div>
-                            <div>
-                                <span class="mt-3 text-bold">Admin updated ID: </span>
-                                {{ this.position.admin_updated_id }}
-                            </div>
+                            <span class="mt-3 text-bold">Updated at: </span>
+                            {{ this.position.updated_at }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <span class="text-bold">Admin created ID: </span>
+                            {{ this.position.admin_created_id }}
+                        </div>
+                        <div>
+                            <span class="mt-3 text-bold">Admin updated ID: </span>
+                            {{ this.position.admin_updated_id }}
                         </div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@ export default {
             <!-- /.card-body -->
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary mr-5">Зберегти</button>
-                <Link href="/positions/list" class="btn btn-secondary">Назад</Link>
+                <Link href="/positions" class="btn btn-secondary">Назад</Link>
             </div>
         </form>
     </div>

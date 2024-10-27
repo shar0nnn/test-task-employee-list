@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('position_id')->nullable();
             $table->foreign('position_id')->references('id')->on('positions')->onDelete('set null');
             $table->unsignedBigInteger('manager_id')->nullable();
-            $table->foreign('manager_id')->references('id')->on('employees')->onDelete('set null');
+            $table->foreign('manager_id')->references('id')->on('employees');
 
             $table->date('hired_at');
             $table->string('phone', 20);

@@ -21,7 +21,7 @@ export default {
 
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <Link :href="route('logout')">Вихід із системи</Link>
+                <Link href="/logout">Вихід із системи</Link>
             </li>
         </ul>
     </nav>

@@ -12,7 +12,7 @@ export default {
 <template>
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <Link :href="route('employees.index')" class="brand-link">
+        <Link href="/employees" class="brand-link">
             <span class="brand-text">Тестове завдання</span>
         </Link>
 
@@ -24,8 +24,8 @@ export default {
                     data-accordion="false">
 
                     <li class="nav-item menu-open mt-2">
-                        <Link :href="route('employees.index')" class="nav-link"
-                              :class="{'active': $page.url === '/employees/list'}">
+                        <Link href="/employees" class="nav-link"
+                              :class="{'active': $page.url === '/employees'}">
                             <p>
                                 Працівники
                             </p>
@@ -33,8 +33,8 @@ export default {
                     </li>
 
                     <li class="nav-item menu-open mt-2">
-                        <Link :href="route('positions.index')" class="nav-link"
-                              :class="{'active': $page.url === '/positions/list'}">
+                        <Link href="/positions" class="nav-link"
+                              :class="{'active': $page.url === '/positions'}">
                             <p>
                                 Посади
                             </p>

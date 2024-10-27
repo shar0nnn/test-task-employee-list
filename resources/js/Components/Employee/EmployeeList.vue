@@ -4,6 +4,7 @@ import ContentTitle from "../Layout/ContentTitle.vue";
 import {Link} from "@inertiajs/vue3";
 import DataTable from 'datatables.net-vue3'
 import DataTableCore from 'datatables.net-dt'
+import {router} from "@inertiajs/vue3"
 
 DataTable.use(DataTableCore)
 
@@ -29,14 +30,52 @@ export default {
                 {data: 'salary', title: 'Зарплата'},
                 {data: null, render: '#actions', orderable: false, title: 'Дії', width: '8%'}
             ],
+
+            employeeId: null,
+            employeeName: null,
+            employeeDataTable: null,
         }
     },
 
-    methods: {},
+    methods: {
+        showDeleteEmployeeModal(data) {
+            this.employeeId = data.id
+            this.employeeName = data.full_name
+            $('#delete-employee-modal').modal('show')
+        },
+
+        deleteEmployee() {
+            $('#delete-employee-modal').modal('hide')
+            router.delete(`/employees/${this.employeeId}`)
+            window.location.reload()
+        },
+    },
 }
 </script>
 
 <template>
+    <div class="modal fade" id="delete-employee-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Видалення працівника</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Ви впевнені, що бажаєте видалити працівника - {{ this.employeeName }}?</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Назад</button>
+                    <button type="button" @click="deleteEmployee" class="btn btn-primary">Видалити</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
     <ContentTitle title="Працівники"></ContentTitle>
 
     <section class="content">
@@ -65,12 +104,12 @@ export default {
 
                                     <template #actions="props">
                                         <Link class="mr-3 btn btn-default"
-                                              :href="`/positions/edit/${props.rowData.id}`">
+                                              :href="`/employees/${props.rowData.id}/edit`">
                                             <ion-icon name="create-outline"></ion-icon>
                                         </Link>
 
                                         <button class="btn btn-default"
-                                                @click="showDeletePositionModal(props.rowData)">
+                                                @click="showDeleteEmployeeModal(props.rowData)">
                                             <ion-icon name="trash-outline"></ion-icon>
                                         </button>
                                     </template>

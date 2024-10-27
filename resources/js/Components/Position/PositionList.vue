@@ -20,7 +20,7 @@ export default {
     data() {
         return {
             columns: [
-                {data: 'name', title: 'Назва'},
+                {data: 'name', title: 'Назва', width: '80%'},
                 {data: 'updated_at', title: 'Оновлено'},
                 {data: null, render: '#actions', orderable: false, title: 'Дії'}
             ],
@@ -38,10 +38,10 @@ export default {
         },
 
         deletePosition() {
-            axios.delete(`/positions/delete/${this.positionIdToDelete}`).then(
+            axios.delete(`/positions/${this.positionIdToDelete}`).then(
                 result => {
                     console.log(result);
-                    window.location.href = '/positions/list'
+                    window.location.href = '/positions'
                 }
             ).catch(error => {
                 console.log(error);
@@ -97,7 +97,7 @@ export default {
                                            :options="{select:true, serverSide:true}">
                                     <template #actions="props">
                                         <Link class="mr-3 btn btn-default"
-                                              :href="`/positions/edit/${props.rowData.id}`">
+                                              :href="`/positions/${props.rowData.id}/edit`">
                                             <ion-icon name="create-outline"></ion-icon>
                                         </Link>
 

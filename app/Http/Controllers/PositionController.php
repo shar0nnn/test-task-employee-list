@@ -29,12 +29,12 @@ class PositionController extends Controller
         }
     }
 
-    public function showCreatePositionComponent(): Response|ResponseFactory
+    public function create(): Response|ResponseFactory
     {
         return inertia('Position/CreatePosition');
     }
 
-    public function createPosition(PositionRequest $request): RedirectResponse
+    public function store(PositionRequest $request): RedirectResponse
     {
         $data = $request->validated();
 
@@ -46,12 +46,12 @@ class PositionController extends Controller
         return redirect()->route('positions.index');
     }
 
-    public function showEditPositionComponent(Position $position): Response|ResponseFactory
+    public function edit(Position $position): Response|ResponseFactory
     {
         return inertia('Position/EditPosition', ['position' => $position]);
     }
 
-    public function editPosition(PositionRequest $request, Position $position): RedirectResponse
+    public function update(PositionRequest $request, Position $position): RedirectResponse
     {
         $data = $request->validated();
 
@@ -63,11 +63,10 @@ class PositionController extends Controller
         return redirect()->route('positions.index');
     }
 
-    public
-    function deletePosition(Position $position): JsonResponse
+    public function destroy(Position $position): JsonResponse
     {
         $position->delete();
 
-        return response()->json(['success' => 'Position deleted successfully.']);
+        return response()->json(['success' => 'Position deleted successfully']);
     }
 }

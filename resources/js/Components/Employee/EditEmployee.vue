@@ -6,29 +6,35 @@ import Inputmask from 'inputmask'
 import Datepicker from 'vue3-datepicker'
 
 export default {
-    name: "CreateEmployee",
+    name: "EditEmployee",
     layout: Layout,
     components: {
         ContentTitle, Link, Datepicker,
     },
     props: {
+        employee: Object,
+        errors: Object,
         positions: Array,
+        manager: Object,
     },
 
     data() {
         return {
             data: useForm({
+                _method: 'patch',
+                id: this.employee.id,
                 photo: null,
-                fullName: null,
-                phone: null,
-                email: null,
-                position: null,
-                salary: null,
+                fullName: this.employee.full_name,
+                phone: this.employee.phone,
+                email: this.employee.email,
+                position: this.employee.position_id,
+                salary: this.employee.salary,
                 manager: {
-                    name: "",
-                    id: null,
+                    name: this.manager ? this.manager.full_name : '',
+                    id: this.manager ? this.manager.id : null,
                 },
-                hiredAt: null,
+                rank: this.employee.rank,
+                hiredAt: this.convertToDateObject(this.employee.hired_at),
             }),
 
             filteredManagers: [],
@@ -41,6 +47,11 @@ export default {
     },
 
     methods: {
+        sendData() {
+            console.log(this.data.hiredAt);
+            this.data.post(`/employees/${this.employee.id}`, this.data)
+        },
+
         handleFileInput(event) {
             this.data.photo = event.target.files[0]
         },
@@ -50,7 +61,7 @@ export default {
 
             this.debounceTimeout = setTimeout(() => {
                 if (this.data.manager.name !== "") {
-                    axios.get(`/employees/get-names/${this.data.manager.name}`).then(result => {
+                    axios.get(`/employees/get-names/${this.data.manager.name}/${this.employee.rank}`).then(result => {
                         this.filteredManagers = result.data.names
                     })
                 } else {
@@ -63,6 +74,10 @@ export default {
             this.data.manager.name = name
             this.data.manager.id = id
             this.filteredManagers = []
+        },
+
+        convertToDateObject(dateString) {
+            return new Date(dateString);
         }
     },
 }
@@ -73,12 +88,16 @@ export default {
 
     <div class="card card-default col-6">
         <div class="card-header">
-            <h3 class="card-title">Додавання працівника</h3>
+            <h3 class="card-title">Редагування працівника</h3>
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form @submit.prevent="data.post('/employees/store')">
+        <form @submit.prevent="sendData">
             <div class="card-body">
+
+                <div class="form-group">
+                    <img v-if="employee.photo" :src="'/storage/' + employee.photo">
+                </div>
 
                 <div class="form-group">
                     <label>Фото</label>
@@ -125,7 +144,6 @@ export default {
                     <label>Посада</label>
                     <select v-model="data.position" class="form-control"
                             :class="{'is-invalid': data.errors.position}">
-                        <option disabled :value=null>Виберіть посаду</option>
                         <option v-for="position in positions" :key="position.id" :value="position.id">
                             {{ position.name }}
                         </option>
@@ -176,10 +194,34 @@ export default {
                         {{ data.errors.hiredAt }}
                     </div>
                 </div>
+
+                <div class="d-flex justify-content-between mt-3">
+                    <div>
+                        <div>
+                            <span class="text-bold">Created at: </span>
+                            {{ this.employee.created_at }}
+                        </div>
+                        <div>
+                            <span class="mt-3 text-bold">Updated at: </span>
+                            {{ this.employee.updated_at }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <span class="text-bold">Admin created ID: </span>
+                            {{ this.employee.admin_created_id }}
+                        </div>
+                        <div>
+                            <span class="mt-3 text-bold">Admin updated ID: </span>
+                            {{ this.employee.admin_updated_id }}
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary mr-5">Додати</button>
+                <button type="submit" class="btn btn-primary mr-5">Зберегти</button>
                 <Link href="/employees" class="btn btn-secondary">Назад</Link>
             </div>
         </form>

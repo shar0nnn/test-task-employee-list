@@ -13,21 +13,24 @@ Route::group(['middleware' => 'guest'], function () {
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
 
     Route::prefix('/employees')->group(function () {
-        Route::get('/list', [EmployeeController::class, 'index'])->name('employees.index');
+        Route::get('/', [EmployeeController::class, 'index'])->name('employees.index');
         Route::get('/get', [EmployeeController::class, 'getEmployees'])->name('employees.get');
-        Route::get('/create', [EmployeeController::class, 'showCreateEmployeeComponent'])->name('employees.create.show');
-        Route::post('/create', [EmployeeController::class, 'create'])->name('employees.create');
-        Route::get('/get-names/{name}', [EmployeeController::class, 'getNames'])->name('employees.get-names');
+        Route::get('/create', [EmployeeController::class, 'create'])->name('employees.create');
+        Route::post('/store', [EmployeeController::class, 'store'])->name('employees.store');
+        Route::get('/{employee}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
+        Route::patch('/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
+        Route::delete('/{employee}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
+        Route::get('/get-names/{name}/{rank?}', [EmployeeController::class, 'getNames'])->name('employees.get-names');
     });
 
     Route::prefix('/positions')->group(function () {
-        Route::get('/list', [PositionController::class, 'index'])->name('positions.index');
+        Route::get('/', [PositionController::class, 'index'])->name('positions.index');
         Route::get('/get', [PositionController::class, 'getPositions'])->name('positions.get');
-        Route::get('/create', [PositionController::class, 'showCreatePositionComponent'])->name('positions.create.show');
-        Route::post('/create', [PositionController::class, 'createPosition'])->name('positions.create ');
-        Route::get('/edit/{position}', [PositionController::class, 'showEditPositionComponent'])->name('positions.edit.show');
-        Route::patch('/edit/{position}', [PositionController::class, 'editPosition'])->name('positions.edit');
-        Route::delete('/delete/{position}', [PositionController::class, 'deletePosition'])->name('positions.delete');
+        Route::get('/create', [PositionController::class, 'create'])->name('positions.create');
+        Route::post('/store', [PositionController::class, 'store'])->name('positions.store ');
+        Route::get('/{position}/edit', [PositionController::class, 'edit'])->name('positions.edit');
+        Route::patch('/{position}', [PositionController::class, 'update'])->name('positions.update');
+        Route::delete('/{position}', [PositionController::class, 'destroy'])->name('positions.destroy');
     });
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
