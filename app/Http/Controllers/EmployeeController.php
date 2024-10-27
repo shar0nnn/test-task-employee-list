@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\Employee;
 use App\Models\Position;
 use App\Services\ImageService;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -39,6 +40,8 @@ class EmployeeController extends Controller
             return DataTables::of(Employee::query())->with(['positions'])
                 ->addColumn('position', function (Employee $employee) {
                     return $employee->position->name;
+                })->addColumn('hired_at', function (Employee $employee) {
+                    return Carbon::parse($employee->hired_at)->format('d.m.Y');
                 })->orderColumn('position', function ($query, $order) {
                     $query->join('positions', 'employees.position_id', '=', 'positions.id')
                         ->orderBy('positions.name', $order);
