@@ -45,8 +45,7 @@ class EmployeeController extends Controller
                 })->orderColumn('position', function ($query, $order) {
                     $query->join('positions', 'employees.position_id', '=', 'positions.id')
                         ->orderBy('positions.name', $order);
-                })
-                ->only(['id', 'photo', 'full_name', 'position', 'hired_at', 'phone', 'email', 'salary'])
+                })->only(['id', 'photo', 'full_name', 'position', 'hired_at', 'phone', 'email', 'salary'])
                 ->make();
         }
     }

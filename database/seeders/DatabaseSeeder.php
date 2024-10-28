@@ -3,7 +3,12 @@
 namespace Database\Seeders;
 
 use App\Models\Employee;
+use App\Models\Position;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Faker\Factory as Faker;
+use Illuminate\Support\Str;
+
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -20,34 +25,35 @@ class DatabaseSeeder extends Seeder
             PositionSeeder::class,
         ]);
 
-        Employee::factory()->count(100)->create();
+        $faker = Faker::create();
+        $admin = User::role('admin')->first();
+        $positions = Position::query()->pluck('id');
+        $countEmployees = [100, 1000, 5000, 15000, 30000];
 
-        Employee::factory()->count(1000)->create([
-            'manager_id' => function() {
-                return Employee::query()->where('rank', 5)->pluck('id')->random();
-            },
-            'rank' => 4,
-        ]);
+        for ($i = 0; $i < 5; $i++) {
+            $managers = Employee::where('rank', 6 - $i)->pluck('id');
+            $rank = 5 - $i;
+            $employees = [];
 
-        Employee::factory()->count(5000)->create([
-            'manager_id' => function() {
-                return Employee::query()->where('rank', 4)->pluck('id')->random();
-            },
-            'rank' => 3,
-        ]);
+            for ($j = 0; $j < $countEmployees[$i]; $j++) {
+                $employees[] = [
+                    'manager_id' => $rank === 5 ? null : $managers->random(),
+                    'rank' => $rank,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                    'full_name' => $faker->name(),
+                    'position_id' => $positions->random(),
+                    'hired_at' => $faker->date(),
+                    'phone' => $faker->numerify('+380#########'),
+                    'email' => $faker->unique()->safeEmail(),
+                    'salary' => $faker->randomFloat(2, 10000, 500000),
+                    'admin_created_id' => $admin->id,
+                ];
+            }
 
-        Employee::factory()->count(15000)->create([
-            'manager_id' => function() {
-                return Employee::query()->where('rank', 3)->pluck('id')->random();
-            },
-            'rank' => 2,
-        ]);
-
-        Employee::factory()->count(30000)->create([
-            'manager_id' => function() {
-                return Employee::query()->where('rank', 2)->pluck('id')->random();
-            },
-            'rank' => 1,
-        ]);
+            foreach (array_chunk($employees, 1000) as $chunk) {
+                Employee::insert($chunk);
+            }
+        }
     }
 }
