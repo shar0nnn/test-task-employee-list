@@ -3,10 +3,12 @@ import Layout from "../Layout/Layout.vue";
 import ContentTitle from "../Layout/ContentTitle.vue";
 import {Link} from "@inertiajs/vue3";
 import DataTable from 'datatables.net-vue3'
+import DataTablesLib from 'datatables.net'
 import DataTableCore from 'datatables.net-dt'
 import {router} from "@inertiajs/vue3"
 
 DataTable.use(DataTableCore)
+DataTable.use(DataTablesLib)
 
 export default {
     name: "EmployeeList",
@@ -23,7 +25,7 @@ export default {
             columns: [
                 {data: null, render: '#photo', orderable: false, title: 'Фото'},
                 {data: 'full_name', title: 'Ім\'я'},
-                {data: 'position', title: 'Посада'},
+                {data: 'position', name: 'position.name', title: 'Посада'},
                 {data: 'hired_at', title: 'Дата працевлаштування'},
                 {data: 'phone', title: 'Телефон'},
                 {data: 'email', title: 'Email'},
@@ -33,7 +35,6 @@ export default {
 
             employeeId: null,
             employeeName: null,
-            employeeDataTable: null,
         }
     },
 

@@ -23,7 +23,7 @@ class Employee extends Model
     protected $casts = [
         'created_at' => 'date:d.m.Y',
         'updated_at' => 'date:d.m.Y',
-        'hired_at' => 'date'
+        'hired_at' => 'date:d.m.Y',
     ];
 
     public function position(): BelongsTo

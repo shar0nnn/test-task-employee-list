@@ -37,16 +37,13 @@ class EmployeeController extends Controller
     public function getEmployees(Request $request)
     {
         if ($request->ajax()) {
-            return DataTables::of(Employee::query())->with(['positions'])
+            $model = Employee::with('position');
+
+            return DataTables::eloquent($model)
                 ->addColumn('position', function (Employee $employee) {
                     return $employee->position->name;
-                })->addColumn('hired_at', function (Employee $employee) {
-                    return Carbon::parse($employee->hired_at)->format('d.m.Y');
-                })->orderColumn('position', function ($query, $order) {
-                    $query->join('positions', 'employees.position_id', '=', 'positions.id')
-                        ->orderBy('positions.name', $order);
                 })->only(['id', 'photo', 'full_name', 'position', 'hired_at', 'phone', 'email', 'salary'])
-                ->make();
+                ->toJson();
         }
     }
 
