@@ -22,7 +22,7 @@ export default {
             columns: [
                 {data: 'name', title: 'Назва', width: '80%'},
                 {data: 'updated_at', title: 'Оновлено'},
-                {data: null, render: '#actions', orderable: false, title: 'Дії'}
+                {data: null, render: '#actions', orderable: false, title: 'Дії', width: '10%'}
             ],
 
             positionIdToDelete: null,

@@ -28,7 +28,7 @@ export default {
                 {data: 'phone', title: 'Телефон'},
                 {data: 'email', title: 'Email'},
                 {data: 'salary', title: 'Зарплата'},
-                {data: null, render: '#actions', orderable: false, title: 'Дії', width: '8%'}
+                {data: null, render: '#actions', orderable: false, title: 'Дії', width: '10%'}
             ],
 
             employeeId: null,
