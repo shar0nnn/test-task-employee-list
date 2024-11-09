@@ -6,6 +6,7 @@ use App\Http\Requests\CreateEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\Employee;
 use App\Models\Position;
+use App\Services\EmployeeService;
 use App\Services\ImageService;
 use Carbon\Carbon;
 use Exception;
@@ -25,7 +26,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class EmployeeController extends Controller
 {
-    public function __construct(private ImageService $imageService)
+    public function __construct(private EmployeeService $employeeService, private ImageService $imageService)
     {
     }
 
@@ -34,7 +35,7 @@ class EmployeeController extends Controller
         return inertia('Employee/EmployeeList');
     }
 
-    public function getEmployees(Request $request)
+    public function get(Request $request)
     {
         if ($request->ajax()) {
             $model = Employee::with('position');
@@ -76,31 +77,7 @@ class EmployeeController extends Controller
         $manager = Employee::query()->find($managerId);
         $data['rank'] = $manager->rank - 1;
 
-        try {
-            DB::beginTransaction();
-
-            $employee = Employee::query()->create([
-                'full_name' => $data['fullName'],
-                'position_id' => $data['position'],
-                'salary' => $data['salary'],
-                'hired_at' => $data['hiredAt'],
-                'phone' => $data['phone'],
-                'email' => $data['email'],
-                'manager_id' => $managerId,
-                'rank' => $data['rank'],
-                'admin_created_id' => auth()->id(),
-            ]);
-
-            if (isset($data['photo'])) {
-                $photoPath = $this->imageService->upload($data['photo'], $employee->photo_path);
-                $employee->update(['photo' => $photoPath]);
-            }
-
-            DB::commit();
-        } catch (Exception $exception) {
-            DB::rollBack();
-            Log::error($exception->getMessage());
-        }
+        $this->employeeService->store($data, $managerId);
 
         return redirect()->route('employees.index');
     }
@@ -117,42 +94,18 @@ class EmployeeController extends Controller
         ]);
     }
 
+    /**
+     * @throws Exception
+     */
     public function update(UpdateEmployeeRequest $request, Employee $employee): RedirectResponse
     {
         $data = $request->validated();
+        $manager = null;
         if (!is_null($data['manager']['id'])) {
             $manager = Employee::query()->find($data['manager']['id']);
         }
 
-        try {
-            DB::beginTransaction();
-
-            $employee->update([
-                'full_name' => $data['fullName'],
-                'position_id' => $data['position'],
-                'salary' => $data['salary'],
-                'hired_at' => $data['hiredAt'],
-                'phone' => $data['phone'],
-                'email' => $data['email'],
-                'manager_id' => is_null($data['manager']['id']) ? null : $manager->id,
-                'rank' => is_null($data['manager']['id']) ? $employee->rank : $manager->rank - 1,
-                'admin_updated_id' => auth()->id(),
-            ]);
-
-            if (isset($data['photo'])) {
-                if ($employee->photo) {
-                    $this->imageService->delete($employee->photo);
-                }
-                $photoPath = $this->imageService->upload($data['photo'], $employee->photo_path);
-
-                $employee->update(['photo' => $photoPath]);
-            }
-
-            DB::commit();
-        } catch (Exception $exception) {
-            DB::rollBack();
-            Log::error($exception->getMessage());
-        };
+        $this->employeeService->update($manager, $employee, $data);
 
         return redirect()->route('employees.index');
     }
@@ -162,32 +115,7 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee): RedirectResponse
     {
-        try {
-            DB::beginTransaction();
-
-            if ($employee->rank > 1) {
-                $subordinates = $employee->subordinates;
-                $managersId = Employee::query()
-                    ->where('rank', $employee->rank)
-                    ->whereKeyNot($employee->id)
-                    ->pluck('id');
-
-                foreach ($subordinates as $subordinate) {
-                    $subordinate->manager_id = $managersId->random();
-                    $subordinate->save();
-                }
-            }
-
-            if ($employee->photo) {
-                $this->imageService->delete($employee->photo);
-            }
-            $employee->delete();
-
-            DB::commit();
-        } catch (Exception $exception) {
-            DB::rollBack();
-            Log::error($exception->getMessage());
-        }
+        $this->employeeService->destroy($employee);
 
         return redirect()->route('employees.index');
     }

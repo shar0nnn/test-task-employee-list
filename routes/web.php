@@ -18,7 +18,7 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
 
     Route::prefix('/employees')->group(function () {
         Route::get('/', [EmployeeController::class, 'index'])->name('employees.index');
-        Route::get('/get', [EmployeeController::class, 'getEmployees'])->name('employees.get');
+        Route::get('/get', [EmployeeController::class, 'get'])->name('employees.get');
         Route::get('/create', [EmployeeController::class, 'create'])->name('employees.create');
         Route::post('/store', [EmployeeController::class, 'store'])->name('employees.store');
         Route::get('/{employee}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
