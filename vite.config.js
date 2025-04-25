@@ -8,7 +8,6 @@ export default defineConfig({
         alias: {
             '@': path.resolve('resources/js'),
             '~': path.resolve('resources/css'),
-            'ziggy-js': path.resolve('vendor/tightenco/ziggy'),
         },
     },
     plugins: [

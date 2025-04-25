@@ -48,7 +48,6 @@ export default {
 
     methods: {
         sendData() {
-            console.log(this.data.hiredAt);
             this.data.post(`/employees/${this.employee.id}`, this.data)
         },
 
